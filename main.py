@@ -1,20 +1,12 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from typing import List, Literal, Optional
 from datetime import datetime
 import hashlib, qrcode, base64
 from io import BytesIO
+from models.item import Item
+from models.pedido import Pedido
 
 app = FastAPI(title="API Mock de NFC-e")
 
-
-class Pedido(BaseModel):
-    numero: int
-    serie: int = 1
-    modelo: Literal[65] = 65
-    dhEmi: datetime = datetime.utcnow()
-    itens: List[Item]
-    pagamento: Literal["dinheiro","credito","debito","pix","outros"]
 
 DB = {}
 
