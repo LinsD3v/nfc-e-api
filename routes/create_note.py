@@ -1,12 +1,12 @@
 from fastapi import APIRouter
 from models.pedido import Pedido
 from mock.key_mock import gerar_chave
-from main import DB
+from db import DB
 import hashlib
 
-router = APIRouter(prefix="/nfc/ ")
+router = APIRouter(prefix="/nfc")
 
-@router.post("/nfce")
+@router.post("/")
 def criar_nfce(pedido: Pedido):
     chave = gerar_chave(pedido.numero, pedido.serie)
     protocolo = hashlib.sha1(chave.encode()).hexdigest()[:15]
@@ -24,6 +24,6 @@ def criar_nfce(pedido: Pedido):
         "chave": chave,
         "protocolo": protocolo,
         "status": "autorizada",
-        "total": total,
+        "total": round(total, 2),
         "qr_url": qr_data
     }
