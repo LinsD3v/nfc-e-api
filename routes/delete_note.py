@@ -1,12 +1,14 @@
 from fastapi import APIRouter, HTTPException
-from db import DB
+from db import buscar_nota, salvar_nota
 
 router = APIRouter(prefix="/nfc")
 
 @router.post("/{chave}/cancel")
 def cancelar_nfce(chave: str, justificativa: str):
-    if chave not in DB:
+    nota = buscar_nota(chave)
+    if not nota:
         raise HTTPException(404, "Nota não encontrada")
-    DB[chave]["status"] = "cancelada"
-    DB[chave]["justificativa"] = justificativa
+    nota["status"] = "cancelada"
+    nota["justificativa"] = justificativa
+    salvar_nota(chave, nota)
     return {"chave": chave, "status": "cancelada"}

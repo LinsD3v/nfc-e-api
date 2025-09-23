@@ -1,10 +1,11 @@
 from fastapi import APIRouter, HTTPException
-from db import DB
+from db import buscar_nota
 
 router = APIRouter(prefix="/nfc")
 
 @router.get("/{chave}")
 def consultar_nfce(chave: str):
-    if chave not in DB:
+    nota = buscar_nota(chave)
+    if not nota:
         raise HTTPException(404, "Nota não encontrada")
-    return DB[chave]
+    return nota

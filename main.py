@@ -7,3 +7,8 @@ app.include_router(create_note.router)
 app.include_router(delete_note.router)
 app.include_router(get_note.router)
 app.include_router(pdf_note.router)
+
+@app.get("/get_db")
+def get_db():
+    from db import listar_notas
+    return listar_notas()
